@@ -1,19 +1,34 @@
-name: GitHub Actions Demo
-run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
-on: [push]
-jobs:
-  Explore-GitHub-Actions:
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
-      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
-      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
-      - name: Check out repository code
-        uses: actions/checkout@v3
+name: Django-app workflow
 
-      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
-      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
-      - name: List files in the repository
-        run: |
-          ls ${{ github.workspace }}
-      - run: echo "🍏 This job's status is ${{ job.status }}."
+on: [push]
+
+jobs:
+  tests:
+    # «Раннер» — создание изолированного окружения с последней версией Ubuntu 
+    runs-on: ubuntu-latest
+
+    steps:
+    # Запуск actions checkout — готового скрипта 
+    # для клонирования репозитория
+    - uses: actions/checkout@v2
+    - name: Set up Python
+      # Запуск actions setup-python — готового скрипта 
+      # для развёртывания окружения Python
+      uses: actions/setup-python@v2
+      with:
+        # Выбор версии Python
+        python-version: 3.7
+
+    - name: Install dependencies
+      run: | 
+        # обновление pip
+        python -m pip install --upgrade pip 
+        # установка flake8 и его плагинов
+        pip install flake8 pep8-naming flake8-broken-line flake8-return flake8-isort
+        # установка зависимостей
+        pip install -r requirements.txt 
+
+    - name: Test with flake8 and django tests
+      run: |
+        # запуск проверки проекта по flake8
+        python -m flake8 
