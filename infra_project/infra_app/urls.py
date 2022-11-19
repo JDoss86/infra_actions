@@ -10,3 +10,4 @@ urlpatterns = [
     path('third/', views.third_page, name='third_page'),
 
 ]
+
