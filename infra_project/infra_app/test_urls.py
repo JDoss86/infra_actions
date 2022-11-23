@@ -25,3 +25,4 @@ class StaticPagesURLTests(TestCase):
 
         response = self.guest_client.get(reverse('infra_app:third_page'))
         self.assertContains(response, 'А это третья страница')
+        
